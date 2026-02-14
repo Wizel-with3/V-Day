@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Special Project</title>
+    <style>
+        /* ၁။ အခြေခံ Background နှင့် Font သတ်မှတ်ချက်များ */
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: url('photo.jpg') no-repeat center center / cover fixed;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ၂။ Card Style (အရိပ်နှင့် ဘောင်များ) */
+        .card {
+            background-color: #d63384; /* ပန်းရောင် Background */
+            width: 380px;
+            min-height: 500px;
+            padding: 30px;
+            border-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 6px solid 
+            box-shadow: 10px 15px 40px rgba(0, 0, 0, 0.6); /* Card အရိပ် */
+            z-index: 10;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ၃။ စာသား Style (Bold နှင့် White) */
+        #question-text, .final-text {
+            color: white !important;
+            font-weight: bold !important;
+            font-size: 24px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+
+        /* ၄။ ပုံများ Style */
+        #main-image { 
+            max-width: 300px; 
+            height: 220px;
+            border-radius: 20px; 
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .circular-img { 
+            border-radius: 50% !important; 
+            width: 180px; 
+            height: 180px; 
+            object-fit: cover;
+        }
+
+        /* ၅။ ခလုတ်များ Style */
+        button { 
+            padding: 12px 28px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            border: 2px solid white; 
+            border-radius: 12px; 
+            margin: 10px; 
+            background-color: #e56ce9; 
+            color: #000000;
+ 
+        }
+
+        .letter-btn {
+            background-color: #ff4081;
+            color: white;
+            border-radius: 25px;
+            margin-top: 15px;
+            display: none; /* Yes နှိပ်မှ ပေါ်လာမည် */
+        }
+
+        /* ၆။ Love Letter Scrolling Animation */
+        #letter-container {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(214, 51, 132, 0.98);
+            z-index: 20;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .scrolling-text {
+            position: absolute;
+            width: 90%;
+            left: 5%;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.6;
+            text-align: center;
+            animation: scrollUp 25s linear forwards;
+        }
+
+        @keyframes scrollUp {
+            0% { top: 100%; }
+            100% { top: -130%; }
+        }
+
+        /* ၇။ ပန်းကြွေသည့် Animation */
+        .flower-fall {
+            position: absolute;
+            top: -50px;
+            z-index: 5;
+            pointer-events: none;
+            animation: realisticFall linear forwards;
+        }
+
+        @keyframes realisticFall {
+            0% { transform: translateY(0) rotate(0deg) translateX(0); }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(-30px); }
+        }
+    </style>
+</head>
+<body>
+
+    <iframe id="youtube-player" width="0" height="0" src="https://www.youtube.com/embed/GjItZOpTnIM?enablejsapi=1" frameborder="0" style="display:none;"></iframe>
+
+    <div class="card" id="card">
+        <div id="header" style="background:#1a2edb; color:white; padding:10px; border-radius:50px; margin-bottom:20px; width:85%; font-weight: bold;">Happy Valentine Day</div>
+        
+        <div id="card-content">
+            <p id="question-text">Will you be my Valentine?</p>
+            
+            <img id="main-image" src="sticker.webp" alt="Valentine">
+            
+            <div id="btn-group">
+                <button id="yes-btn" onclick="celebrate()">Yes</button>
+                <button id="no-btn" onclick="handleNo()">No</button>
+            </div>
+        </div>
+
+        <div id="letter-container">
+            <div id="scroll-text-box" class="scrolling-text">
+                Today is called Valentine’s Day, but every moment with you already feels like a celebration of love. <br><br>
+                Your smile has a way of turning ordinary days into something magical, and your presence makes my world softer, warmer, and brighter. <br><br>
+                With you, even silence feels beautiful, and every heartbeat quietly whispers your name. <br><br>
+                I don’t just love you for today — I love you in every tomorrow waiting ahead of us. <br><br>
+                I want to laugh with you, grow with you, and stand beside you through every season of life. <br><br>
+                You are not just my Valentine; you are my favorite part of this world, now and always.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let clickCount = 0;
+        
+        // No နှိပ်ရင် ပြောင်းမယ့်စာသားများ
+        const questions = [
+            "Did you really touch No?", 
+            "Come on Don't click the No Click Yes", 
+            "How can you still touch that NO", 
+            "Now No is Gone. Just Click That Yes"
+        ];
+
+        // No နှိပ်ရင် ပြောင်းမယ့်ပုံများ (ပုံနာမည်များ မှန်အောင်ထည့်ပါ)
+        const imageSources = ["sticker2.webp", "sticker3.jpg", "sticker4.webp", "sticker5.webp"];
+
+        function handleNo() {
+            if (clickCount < questions.length) {
+                const questionText = document.getElementById('question-text');
+                const mainImage = document.getElementById('main-image');
+                const yesBtn = document.getElementById('yes-btn');
+                const noBtn = document.getElementById('no-btn');
+
+                document.getElementById('header').style.display = 'none';
+                questionText.innerText = questions[clickCount];
+                mainImage.src = imageSources[clickCount];
+
+                // Yes ခလုတ်ကို ကြီးလာစေခြင်း
+                let size = 18 + (clickCount + 1) * 22;
+                yesBtn.style.fontSize = size + "px";
+                yesBtn.style.padding = (15 + clickCount * 10) + "px " + (30 + clickCount * 20) + "px";
+
+                clickCount++;
+                if (clickCount >= 4) noBtn.style.display = 'none';
+            }
+        }
+
+        function celebrate() {
+            // ၁။ သီချင်းဖွင့်ခြင်း
+            const player = document.getElementById('youtube-player');
+            player.src += "&autoplay=1";
+
+            // ၂။ ကတ်ဒီဇိုင်းကို နောက်ဆုံးပုံစံပြောင်းခြင်း
+            const cardContent = document.getElementById('card-content');
+            cardContent.innerHTML = `
+                <img src="sfinal.webp" class="circular-img">
+                <h2 class="final-text" style="margin:25px 0; line-height:1.5;">
+                    ပျော်ရွှင်စရာ<br>ချစ်သူများနေ့လေး<br>တစ်နေ့ဖြစ်ပါစေ<br>ပေပီ ❤️
+                </h2>
+                <button class="letter-btn" id="love-btn" style="display:block;" onclick="startLetter()">Love Letter</button>
+            `;
+
+            // ၃။ ပန်းများဖြည်းဖြည်းချင်း ကြွေစေခြင်း
+            setInterval(dropFlower, 450);
+        }
+
+        function startLetter() {
+            document.getElementById('letter-container').style.display = 'block';
+        }
+
+        function dropFlower() {
+            const flower = document.createElement('img');
+            const icons = [
+                'https://img.icons8.com/emoji/48/rose-emoji.png',
+                'https://img.icons8.com/emoji/48/red-heart.png',
+                'https://img.icons8.com/emoji/48/cherry-blossom.png'
+            ];
+            flower.src = icons[Math.floor(Math.random() * icons.length)];
+            flower.classList.add('flower-fall');
+            flower.style.left = Math.random() * 100 + "vw";
+            flower.style.width = (Math.random() * 20 + 20) + "px";
+            flower.style.animationDuration = (Math.random() * 4 + 6) + "s"; // ဖြည်းဖြည်းချင်းကျရန်
+            document.body.appendChild(flower);
+            setTimeout(() => flower.remove(), 10000);
+        }
+    </script>
+</body>
+</html>
